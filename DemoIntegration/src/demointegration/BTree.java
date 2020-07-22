@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package demointegration;
 
 import java.util.*;
@@ -29,13 +24,14 @@ public class BTree {
     private String addConcatandAugment(String RE)
     {
         ArrayList<Character> strTOlist = new ArrayList<>(RE.chars().mapToObj(i->Character.valueOf((char)i)).collect(Collectors.toList()));
-        for(int i=0;i<strTOlist.size()-1;i++)
-        {
-            if(i!=0 && i%2==0)
-            {
-                strTOlist.add(i+1,'&');
-            }
-        }
+//        for(int i=1;i<RE.length()-1;i++)
+//        {
+//            if(i%2==0)
+//            {
+//                strTOlist.add(i+1,'&');
+//            }
+//        }
+        strTOlist.add(RE.length(),'&');
         StringBuilder sb = new StringBuilder();
         for(Character ch : strTOlist)
         {
@@ -44,7 +40,7 @@ public class BTree {
         String newRE = sb.toString();
         return newRE;
     }
-    public void doOperation(){
+    public void doGivenOper(){
         if(this.operats.size() > 0 )
         {
             char charAt = operats.pop();
@@ -78,8 +74,8 @@ public class BTree {
             
         }
         //concatenating all the symbols
-        RE = addConcatandAugment(RE);
-        System.out.println(RE + "is the augmented regular expression");
+//        RE = addConcatandAugment(RE);
+//        System.out.println(RE + "is the augmented regular expression");
         node.clear();
         operats.clear();
         boolean isSymbol = false;
@@ -102,7 +98,7 @@ public class BTree {
             }
         }
         while(!operats.isEmpty()){
-            doOperation();
+            doGivenOper();
         }
     }
 }

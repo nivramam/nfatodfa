@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package demointegration;
 
 import java.util.List;
@@ -34,13 +29,13 @@ public class SyntaxTree {
             return;
         }
         // nullable for leaf node is FALSE
-        if(node instanceof LeafNode)
+        if(node instanceof SingleNTNode && node.leftchild==null && node.rightchild==null)
         {
             node.setNullable(false);
             numOfLeaves+=1;
         }
         //calculate nullable if not leaf 
-        if(!(node instanceof LeafNode))
+        if(node instanceof SingleNTNode && (node.leftchild!=null || node.rightchild==null))
         {
             SingleNTNode leftndoe = node.getLeftchild();
             SingleNTNode rightndoe = node.getRightchild();
@@ -69,11 +64,11 @@ public class SyntaxTree {
         {
             return;
         }
-        if(node instanceof LeafNode)
+        if(node instanceof SingleNTNode && node.leftchild==null && node.rightchild==null)
         {
-            LeafNode lnode = (LeafNode) node;
-            node.addToFirstPos(lnode.getNum());
-            node.addToLastPos(lnode.getNum());
+            /*if node is leaf, add it's position to both first pos and last pos*/
+            node.addToFirstPos(node.getNumberofNode());
+            node.addToLastPos(node.getNumberofNode());
         }
         else
         {
@@ -104,16 +99,15 @@ public class SyntaxTree {
                     break;
                 case "*":
                     //add firstpos and lastpos of left node
-                        node.addToFirstPos((int)left.getNumberofNode());
-                        node.addToLastPos((int)left.getNumberofNode());
+                    node.addToFirstPos((int)left.getNumberofNode());
+                    node.addToLastPos((int)left.getNumberofNode());
                     break;
             }
         }
-        System.err.println(node);
+//        System.out.println(node);
     }
     public void generateFollowPos(SingleNTNode node)
-    {
-        /*note: followpos only for concat and * symbols. not anything else.*/
+    {/*note: followpos based on for concat and * symbols*/
         if(node==null)
         {
             return;

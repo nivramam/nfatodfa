@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package demointegration;
 
 import java.util.ArrayList;
@@ -63,13 +58,13 @@ public class DFAConst {
     {
         states = new ArrayList<>();
         this.reg = getRegex();
-        String actual = this.reg;
+        
         for(int i=0;i<this.reg.length();i++)
         {
             String concat = "&";
             if(i%2==0 && i!=0)
             {
-                actual+=concat;
+                this.reg+=concat;
             }
         }
         System.out.println("---___Forwarding to syntax tree builder___---");
@@ -97,16 +92,16 @@ public class DFAConst {
                 state[0] = new State(rootID);
             state[0].isStart=true;
             states.add(state[0]);
-            int i;
+            int i,max = 2*syntree.getNumOfLeaves()-1;
             SingleNTNode node = root.getLeftchild();
-            for(i=0;i<syntree.getNumOfLeaves()+1;i+=2)
+            for(i=0;i<max;i+=2)
             {
                 state[i]=new State(node.number_of_node);
                 states.add(state[i]);
                 node=node.getLeftchild();
             }
             node =root;
-            for(i=1;i<syntree.getNumOfLeaves()+1;i+=2)
+            for(i=1;i<max;i+=2)
             {
                 state[i]=new State(node.number_of_node);
                 states.add(state[i]);
@@ -118,18 +113,17 @@ public class DFAConst {
                 state[i].isStart=false;
                 i--;
             }
-            while(i!=syntree.getNumOfLeaves())
+            while(i!=max)
             {
                 state[i].isFinal=false;
                 i--;
             }
             state[i].isFinal=true;  
-            for(int j=0;j<syntree.getNumOfLeaves();j++)
+            for(int j=0;j<max;j++)
                 state[j].goNext(j+1, states);
         }
     }
 }
-
 class State {
     int ID;
     String name;
