@@ -1,0 +1,9 @@
+//        BTree bt = new BTree();
+//        System.out.println("before Btree functionality");
+//        System.out.println(bt.addConcatandAugment("a+b*"));
+//        System.out.println("after Btree functionality");
+//        System.out.println("done");
+//        SyntaxTree tr = new SyntaxTree("a+b*");
+//        tr.generateFLpos(new SingleNTNode("/"));
+//        SingleNTNode node = new SingleNTNode("1");
+//        System.out.println((int)node.getNumberofNode());

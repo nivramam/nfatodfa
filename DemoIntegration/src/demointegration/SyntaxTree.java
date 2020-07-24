@@ -1,18 +1,19 @@
 package demointegration;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 /**
  *
  * @author lenovo
+ * this class generates nulable, first pos, last pos and follow pos for the node 
  */
 public class SyntaxTree {
     private final String regex;
     private BTree btee;
-    private SingleNTNode root; //the head of raw syntax tree
+    private SingleNode root; //the head of raw syntax tree
     private int numOfLeaves;
-    private List<Integer> followPos[];
-    private Operation op;
+    private List<List<Integer>> followPos =  new ArrayList<>();
     
     public SyntaxTree(String regex)
     {
@@ -21,23 +22,23 @@ public class SyntaxTree {
         /*build the empty BTree*/
         btee.generateTree(regex);
     }
-    
-    public void generateNullable(SingleNTNode node){
+    public void generateNullable(SingleNode node){
+        
         if(node==null)
         {
             return;
         }
         // nullable for leaf node is FALSE
-        if(node instanceof SingleNTNode && node.leftchild==null && node.rightchild==null)
+        if(node instanceof SingleNode && node.leftchild==null && node.rightchild==null)
         {
             node.setNullable(false);
             numOfLeaves+=1;
         }
         //calculate nullable if not leaf 
-        if(node instanceof SingleNTNode && (node.leftchild!=null || node.rightchild==null))
+        if(node instanceof SingleNode && (node.leftchild!=null || node.rightchild!=null))
         {
-            SingleNTNode leftndoe = node.getLeftchild();
-            SingleNTNode rightndoe = node.getRightchild();
+            SingleNode leftndoe = node.getLeftchild();
+            SingleNode rightndoe = node.getRightchild();
             generateNullable(leftndoe);
             generateNullable(rightndoe);
             switch(node.getSymbol())
@@ -58,12 +59,12 @@ public class SyntaxTree {
             }
         }
     }
-    public void generateFLpos(SingleNTNode node){
+    public void generateFLpos(SingleNode node){
         if(node==null)
         {
             return;
         }
-        if(node instanceof SingleNTNode && node.leftchild==null && node.rightchild==null)
+        if(node instanceof SingleNode && node.leftchild==null && node.rightchild==null)
         {
             /*if node is leaf, add it's position to both first pos and last pos*/
             node.addToFirstPos(node.getNumberofNode());
@@ -71,16 +72,18 @@ public class SyntaxTree {
         }
         else
         {
-            SingleNTNode left = node.getLeftchild();
-            SingleNTNode right = node.getRightchild();
+            SingleNode left = node.getLeftchild();
+            SingleNode right = node.getRightchild();
             generateFLpos(left);
             generateFLpos(right);
             switch(node.getSymbol()){
-                case "|":
+                case "+":
                     //for or no conditions need to be checked 
                     //get the previous symbol and succeeding symbol
                     node.addToFirstPos((int)right.getNumberofNode());
+                    node.addToFirstPos((int)left.getNumberofNode());
                     node.addToLastPos((int)left.getNumberofNode());
+                    node.addToLastPos((int)right.getNumberofNode());
                     break;
                 case "&":
                     //for &, isnullable(left) = true then both left and right
@@ -88,12 +91,17 @@ public class SyntaxTree {
                     if(left.isNullable()){
                         node.addToFirstPos((int)left.getNumberofNode());
                         node.addToFirstPos((int)right.getNumberofNode());
+                    }
+                    else{
+                        node.addToFirstPos((int)left.getNumberofNode());
+                    }
+                    if(right.isNullable())
+                    {
                         node.addToLastPos((int)left.getNumberofNode());
                         node.addToLastPos((int)right.getNumberofNode());
                     }
                     else{
-                        node.addToFirstPos((int)left.getNumberofNode());
-                        node.addToLastPos((int)left.getNumberofNode());
+                        node.addToLastPos((int)right.getNumberofNode());
                     }
                     break;
                 case "*":
@@ -103,39 +111,35 @@ public class SyntaxTree {
                     break;
             }
         }
-//        System.out.println(node);
     }
-    public void generateFollowPos(SingleNTNode node) /*recursive function to find followpos till it's null*/
+    public void generateFollowPos(SingleNode node) /*recursive function to find followpos till it's null*/
     {/*note: followpos based on for concat and * symbols*/
         if(node==null)
         {
             return;
         }
-        op = new Operation();
-        SingleNTNode left = node.getLeftchild();
-        SingleNTNode right = node.getRightchild();
-        Stack<SingleNTNode> newstack = new Stack<>();
-        newstack.add(node);
-        newstack.add(left);
-        newstack.add(right);
-        switch(node.getSymbol()){
+        switch(node.getSymbol())
+        {
             case "&":
-                op.doConcatenate(newstack);
+                SingleNode left = node.getLeftchild();
+                SingleNode right = node.getRightchild();
+                for(Integer i : left.lastpos){
+                    List<Integer> follAnd =  right.firstpos;
+                    followPos.add(i, follAnd); 
+                }
+                
                 break;
             case "*":
-                op.doStar(newstack);
+                SingleNode n = node.getLeftchild();
+                for(Integer i : n.lastpos){
+                    List<Integer> follStar =  n.firstpos;
+                    followPos.add(i, follStar); 
+                }
                 break;
         }
-        generateFollowPos(left);
-        generateFollowPos(right);
     }
-    public SingleNTNode getRoot(){return this.root;}
-    public List<Integer>[] getFollowPos(){return this.followPos; }
+    public SingleNode getRoot(){return this.root;}
+    public List<List<Integer>> getFollowPos(){return this.followPos; }
     public int getNumOfLeaves(){return this.numOfLeaves;}
 
-    @Override
-    public String toString() {
-        return "Follow pos:" + this.followPos + ""; //To change body of generated methods, choose Tools | Templates.
-    }
-    
 }
