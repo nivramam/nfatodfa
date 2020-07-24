@@ -1,48 +1,24 @@
 package demointegration;
 
 import java.util.*;
-import java.util.stream.Collectors;
 /**
  *
- * @author lenovoN
+ * @author lenovo
  */
 public class BTree {
     /*using stack for node and operator - because the las added is needed for the operations*/
     Stack<Character> operats= new Stack<>();
     Stack<SingleNTNode> node = new Stack<>();
     private Operation opobj;
-    private List<Character> input = new ArrayList<>();
     private List<Character> OPList = new ArrayList<>();
-    
-    private boolean isInputChar(char ch)
-    {
-        if(OPList.contains(ch)){
-            return false;
-        }
+    private boolean isInputChar(char ch) {
+        if(OPList.contains(ch)){return false;}
         return true;
-    }
-    private String addConcatandAugment(String RE)
-    {
-        ArrayList<Character> strTOlist = new ArrayList<>(RE.chars().mapToObj(i->Character.valueOf((char)i)).collect(Collectors.toList()));
-//        for(int i=1;i<RE.length()-1;i++)
-//        {
-//            if(i%2==0)
-//            {
-//                strTOlist.add(i+1,'&');
-//            }
-//        }
-        strTOlist.add(RE.length(),'&');
-        StringBuilder sb = new StringBuilder();
-        for(Character ch : strTOlist)
-        {
-            sb.append(ch); 
-        }
-        String newRE = sb.toString();
-        return newRE;
     }
     public void doGivenOper(){
         if(this.operats.size() > 0 )
         {
+            opobj = new Operation();
             char charAt = operats.pop();
             switch (charAt) {
                 case '|':
@@ -65,17 +41,6 @@ public class BTree {
         System.out.println();
         Character[] opsarray = {'*','|','&'};
         OPList.addAll(Arrays.asList(opsarray));
-        
-        Character ch[] = new Character[52];
-        for(int i = 65;i<=90;i++)
-        {
-            ch[i - 65] = (char)i;
-            ch[i - 65 + 26] = (char)(i + 32);
-            
-        }
-        //concatenating all the symbols
-//        RE = addConcatandAugment(RE);
-//        System.out.println(RE + "is the augmented regular expression");
         node.clear();
         operats.clear();
         boolean isSymbol = false;

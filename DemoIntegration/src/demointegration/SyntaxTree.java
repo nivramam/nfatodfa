@@ -1,11 +1,10 @@
 package demointegration;
 
 import java.util.List;
-import java.util.Set;
 import java.util.Stack;
 /**
  *
- * @author lenovoN
+ * @author lenovo
  */
 public class SyntaxTree {
     private final String regex;
@@ -106,12 +105,13 @@ public class SyntaxTree {
         }
 //        System.out.println(node);
     }
-    public void generateFollowPos(SingleNTNode node)
+    public void generateFollowPos(SingleNTNode node) /*recursive function to find followpos till it's null*/
     {/*note: followpos based on for concat and * symbols*/
         if(node==null)
         {
             return;
         }
+        op = new Operation();
         SingleNTNode left = node.getLeftchild();
         SingleNTNode right = node.getRightchild();
         Stack<SingleNTNode> newstack = new Stack<>();
@@ -135,7 +135,7 @@ public class SyntaxTree {
 
     @Override
     public String toString() {
-        return "Hello" + followPos; //To change body of generated methods, choose Tools | Templates.
+        return "Follow pos:" + this.followPos + ""; //To change body of generated methods, choose Tools | Templates.
     }
     
 }

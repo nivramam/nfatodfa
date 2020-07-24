@@ -47,11 +47,11 @@ public class DFAConst {
                 }
             }
         }
-        System.out.println("Following are the symbols that are used in the regular expression!");
-        for(int i=0;i<symbols.size();i++)
-        {
-            System.out.println(symbols.get(i));
-        }
+//        System.out.println("Following are the symbols that are used in the regular expression!");
+//        for(int i=0;i<symbols.size();i++)
+//        {
+//            System.out.println(symbols.get(i));
+//        }
         return symbols;
     }
     public void startProcess()
@@ -84,45 +84,24 @@ public class DFAConst {
         syntree.generateFollowPos(syntree.getRoot());
         SingleNTNode root = this.syntree.getRoot();
         State[] state = new State[syntree.getNumOfLeaves()+1];
+        System.out.println("Forming DFA States");
         if(root!=null)
         {
             int rootID = root.number_of_node;
-            System.out.println("Debug DFASTates functionality");
             if(state[0]==null)
                 state[0] = new State(rootID);
             state[0].isStart=true;
-            states.add(state[0]);
-            int i,max = 2*syntree.getNumOfLeaves()-1;
-            SingleNTNode node = root.getLeftchild();
-            for(i=0;i<max;i+=2)
-            {
-                state[i]=new State(node.number_of_node);
-                states.add(state[i]);
-                node=node.getLeftchild();
-            }
-            node =root;
-            for(i=1;i<max;i+=2)
-            {
-                state[i]=new State(node.number_of_node);
-                states.add(state[i]);
-                node=node.getRightchild();
-            }
-            i=syntree.getNumOfLeaves();
-            while(i!=0)
-            {
-                state[i].isStart=false;
-                i--;
-            }
-            while(i!=max)
-            {
-                state[i].isFinal=false;
-                i--;
-            }
-            state[i].isFinal=true;  
-            for(int j=0;j<max;j++)
-                state[j].goNext(j+1, states);
+            states.add(state[0]); 
+//            for(int j=0;j<max;j++)
+//                state[j].goNext(j+1, states);
+        }
+        for(int j=0;j<states.size();j++)
+        {
+            System.err.println("lo");
+            System.out.println(states.get(j));
         }
     }
+    
 }
 class State {
     int ID;
@@ -146,7 +125,8 @@ class State {
     }
     @Override
     public String toString() {
-        return "ID number : " + this.ID + "state!"; //To change body of generated methods, choose Tools | Templates.
+        System.out.println("----State-----Transition");
+        return "source state: " + this.ID + "----next state!" + this.nextState;
     }
 }
 
