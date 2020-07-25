@@ -20,10 +20,11 @@ public class SyntaxTree {
         this.regex = regex;
         this.btee = new BTree();
         /*build the empty BTree*/
+        
         btee.generateTree(regex);
     }
     public void generateNullable(SingleNode node){
-        
+        this.root=node;
         if(node==null)
         {
             return;
@@ -60,6 +61,7 @@ public class SyntaxTree {
         }
     }
     public void generateFLpos(SingleNode node){
+        this.root=node;
         if(node==null)
         {
             return;
@@ -114,6 +116,7 @@ public class SyntaxTree {
     }
     public void generateFollowPos(SingleNode node) /*recursive function to find followpos till it's null*/
     {/*note: followpos based on for concat and * symbols*/
+        this.root=node;
         if(node==null)
         {
             return;
