@@ -23,32 +23,33 @@ public class SyntaxTree {
         
         btee.generateTree(regex);
     }
-    public void generateNullable(SingleNode node){
+    public boolean generateNullable(SingleNode node){
         this.root=node;
         if(node==null)
         {
-            return;
+           System.exit(0);
         }
         // nullable for leaf node is FALSE
         if(node instanceof SingleNode && node.leftchild==null && node.rightchild==null)
         {
             node.setNullable(false);
             numOfLeaves+=1;
+            System.out.println(numOfLeaves);
         }
         //calculate nullable if not leaf 
         if(node instanceof SingleNode && (node.leftchild!=null || node.rightchild!=null))
         {
             SingleNode leftndoe = node.getLeftchild();
             SingleNode rightndoe = node.getRightchild();
-            generateNullable(leftndoe);
-            generateNullable(rightndoe);
+            boolean leftN = generateNullable(leftndoe);
+            boolean rightN = generateNullable(rightndoe);
             switch(node.getSymbol())
             {
                 case "|":
-                    node.setNullable(leftndoe.isNullable() | rightndoe.isNullable());
+                    node.setNullable(leftN | rightN);
                     break;
                 case "&":
-                    node.setNullable(leftndoe.isNullable() & rightndoe.isNullable());
+                    node.setNullable(leftN & rightN);
                     break;
                 case "*":
                     node.setNullable(true);
@@ -59,6 +60,7 @@ public class SyntaxTree {
                     System.out.println("do nothing...");    
             }
         }
+        return node.nullable;
     }
     public void generateFLpos(SingleNode node){
         this.root=node;
