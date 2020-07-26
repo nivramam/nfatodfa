@@ -25,7 +25,7 @@ public class BTree {
         boolean isSymbol = false;
         for(int i=0; i<RE.length();i++)
         {
-            if(RE.charAt(i)=='/' || RE.charAt(i)=='+'){
+            if(RE.charAt(i)=='/' || RE.charAt(i)=='&' || RE.charAt(i)=='*'){
                 isSymbol = true;
             }
             if(isSymbol)
