@@ -13,12 +13,14 @@ public class SingleNode {
     SingleNode ancestor, leftchild, rightchild;   
     List<Integer> firstpos, lastpos;
     Integer number_of_node; //number of the node - convert from the String - symbol of node. 
-    boolean nullable = false;
+    public boolean nullable = false;
 
     public SingleNode(String symbolofnode) {
         this.symbol_ofnode = symbolofnode;
         this.firstpos = new ArrayList<>();
         this.lastpos = new ArrayList<>();
+        this.leftchild=null;
+        this.rightchild=null;
         nullable = false;
     }    
     /*getters and setters for the characteristics*/
