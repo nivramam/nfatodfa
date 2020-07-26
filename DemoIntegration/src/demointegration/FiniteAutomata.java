@@ -42,12 +42,10 @@ public class FiniteAutomata {
         transitions = new ArrayList<>();
 	for (int i = 0; i < states; i++) {
             line = input.nextLine();
-        //    System.out.println(line);
             Map<Character, List<Integer>> transitionState = new HashMap<>();
             for (Character c : inputs) {
 		List<Integer> nextState = new ArrayList<>();
 		line = parseTransition(line, nextState);
-            //    System.out.println(nextState);
 		transitionState.put(c, nextState);
             }
             transitions.add(transitionState);
@@ -65,9 +63,7 @@ public class FiniteAutomata {
 		line = line.substring(line.indexOf(",") + 1, line.length());
             }
 		state.add(Integer.parseInt(line.substring(0, line.indexOf("}"))));
-             //   System.out.println(state);
-        }
-     //   System.out.println(line.substring(line.indexOf("}") + 1, line.length()));
+	}
 	return line.substring(line.indexOf("}") + 1, line.length());
     }
     
@@ -78,14 +74,11 @@ public class FiniteAutomata {
 	List<List<Integer>> newStates = new ArrayList<>();
 	List<Integer> lambdaClosure = new ArrayList<>();
 	calculateEpsilonClosure(0, lambdaClosure);
-      //  System.out.println(lambdaClosure);
-	newStates.add(lambdaClosure);
-//	System.out.println("newstates"+newStates);	
+	newStates.add(lambdaClosure);	
 	List<Character> dfaInputs = new ArrayList<>(this.inputs);
 	// removing epsilon for DFA
 	dfaInputs.remove(Character.valueOf(' '));	
 	List<Integer> current = new ArrayList<>(lambdaClosure);
-    //    System.out.println(current+"current");
 	int totalState = 0, finalState = 0;
 	
 	while (current != null) {
@@ -93,15 +86,12 @@ public class FiniteAutomata {
             for (Character i : dfaInputs) {
 		List<Integer> tempStates = new ArrayList<>();
 		for (Integer currentState : current) {
-                //    System.out.println(this.transitions.get(currentState).get(i)+" .  ");
                     for (Integer transitionState : this.transitions.get(currentState).get(i)) {
 			calculateEpsilonClosure(transitionState, tempStates);
                     }
-                //    System.out.println(tempStates);
 		}
 		List<Integer> dfaState = new ArrayList<>();
 		Collections.sort(tempStates);
-              //  System.out.println(tempStates);
 		if (!newStates.contains(tempStates)) {
                     newStates.add(tempStates);
                     dfaState.add(++totalState);
@@ -139,12 +129,10 @@ public class FiniteAutomata {
 		if (lambdaClosure.contains(state)) {}
 		else if (stateTransitions.containsKey(' ')) {
 			lambdaClosure.add(state);
-                     //   System.out.println(lambdaClosure);
 			for (Integer i : stateTransitions.get(' ')) {
 				calculateEpsilonClosure(i, lambdaClosure);
 			}
 		}
-            //    System.out.println(lambdaClosure);
     }
     
     public List<Integer> getTransitionState(char input, int state)
