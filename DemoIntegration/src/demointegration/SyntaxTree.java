@@ -123,6 +123,12 @@ public class SyntaxTree {
         {
             return;
         }
+//        if last node, followpos =null
+        if(node.getSymbol()=="#")
+        {
+            this.followPos=null;
+            return;
+        }
         switch(node.getSymbol())
         {
             case "&":
@@ -147,4 +153,8 @@ public class SyntaxTree {
     public List<List<Integer>> getFollowPos(){return this.followPos; }
     public int getNumOfLeaves(){return this.numOfLeaves;}
 
+    @Override
+    public String toString() {
+        return "Syntax tree generated: no: of leaves = " + getNumOfLeaves(); //To change body of generated methods, choose Tools | Templates.
+    }
 }
