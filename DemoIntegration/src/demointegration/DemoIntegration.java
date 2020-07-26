@@ -52,7 +52,6 @@ public class DemoIntegration {
                     System.out.println("\n------");
                     for (int i = 0; i < nfa.states; i++) {
                         System.out.print(i + ":   ");
-                        //System.out.print(nfa.transitions.get(i));
                         for (int j = 0; j < nfa.inputs.size(); j++) {
                             System.out.print("(" + nfa.inputs.get(j) + "," + nfa.getTransitionState(nfa.inputs.get(j), i) + ") ");
                         }
