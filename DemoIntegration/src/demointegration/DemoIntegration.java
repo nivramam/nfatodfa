@@ -1,22 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package demointegration;
 
 import java.util.Scanner;
 import java.io.*;
 import java.util.Scanner;
 
-/**
- *
- * @author lenovo
- */
+
 public class DemoIntegration {
 
     public static void main(String[] args) throws FileNotFoundException {
-        // TODO code application logic here
         System.out.println("MENU");
         System.out.println("1. RE -> NFA");
         System.out.println("2. NFA -> DFA");
@@ -38,7 +30,7 @@ public class DemoIntegration {
                     n.displayNfa();
                     break;
                 case 2:
-                    File file = new File("C:\\Users\\lenovo\\Documents\\NetBeansProjects\\DemoIntegration\\src\\files\\nfa1.txt");
+                    File file = new File("C:\\DemoIntegration\\src\\files\\nfa1.txt");
                     Scanner s1 = new Scanner(file);
                     FiniteAutomata nfa = new FiniteAutomata(s1);
                     //    System.out.println(nfa);
@@ -51,8 +43,7 @@ public class DemoIntegration {
                     }
                     System.out.println("\n------");
                     for (int i = 0; i < nfa.states; i++) {
-                        System.out.print(i + ":   ");
-                        //System.out.print(nfa.transitions.get(i));
+                        System.out.print(i + ":   ")
                         for (int j = 0; j < nfa.inputs.size(); j++) {
                             System.out.print("(" + nfa.inputs.get(j) + "," + nfa.getTransitionState(nfa.inputs.get(j), i) + ") ");
                         }
