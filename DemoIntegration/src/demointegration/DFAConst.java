@@ -54,18 +54,4 @@ class State {
     State nextState;
     public boolean isFinal,isStart;
 
-    public State(int number) {
-        ID = number;
-        this.isFinal = false;
-        this.isStart = false;
-    }    
-    public void setnextState(State setnext)
-    {
-        this.nextState=setnext;
-    }
-    @Override
-    public String toString() {
-        System.out.println("----State-----Transition");
-        return "source state: " + this.ID + "----next state!" + this.nextState;
-    }
 }
